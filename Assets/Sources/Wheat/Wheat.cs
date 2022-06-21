@@ -1,13 +1,8 @@
 using UnityEngine;
 
-public class Wheat : MonoBehaviour
+public class Wheat : MonoBehaviour, ICutable
 {
     [SerializeField] private WholeState _wholeState;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        _wholeState.SwitchToFelled();
-    }
 
     private void Update()
     {
@@ -15,5 +10,10 @@ public class Wheat : MonoBehaviour
         {
             _wholeState.SwitchToFelled();  
         }
+    }
+
+    public void Cut()
+    {
+        _wholeState.SwitchToFelled();
     }
 }
