@@ -19,7 +19,7 @@ public class WheatController : MonoBehaviour
 
     private void Start()
     {
-        foreach (_WheatState wheat in _allState)
+        foreach (var wheat in _allState)
         {
             if (wheat == null)
                 continue;
@@ -34,25 +34,34 @@ public class WheatController : MonoBehaviour
 
         foreach (var state in _wheatDictionary.Keys)
             _wheatDictionary[state].gameObject.SetActive(false);
-        
+
         SetActiveState(WheatState.Whole);
     }
 
     public void JumpBack()
     {
-       //todo можно дописать 
+        //todo можно дописать 
     }
 
     public void SetActiveState(WheatState newState)
     {
-        if(!_wheatDictionary.ContainsKey(newState))
+        if (!_wheatDictionary.ContainsKey(newState))
             return;
-        
-        if(_activeState != null)
+
+        if (_activeState != null)
+        {
+            if (_activeState == _wheatDictionary[newState])
+                return;
+            
             _activeState.gameObject.SetActive(false);
+        }
 
         _activeState = _wheatDictionary[newState];
-        
+
         _activeState.gameObject.SetActive(true);
+
+        _activeState.StartInternalProcess();
+
+        Debug.Log(_activeState.GetType());
     }
 }
