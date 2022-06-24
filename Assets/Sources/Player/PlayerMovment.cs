@@ -23,7 +23,7 @@ public class PlayerMovment : MonoBehaviour
 
         DistributionId();
     }
-
+    
     private void OnEnable()
     {
         _joystickForMovment.OnJoystickMove += ChangeDirection;

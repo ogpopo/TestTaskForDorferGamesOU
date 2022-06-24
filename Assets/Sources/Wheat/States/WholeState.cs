@@ -4,7 +4,7 @@
     {
         base.InitState(wheatController);
 
-        _state = WheatController.WheatState.Whole;
+        State = WheatController.WheatState.Whole;
     }
     
     public void SwitchToFelled()

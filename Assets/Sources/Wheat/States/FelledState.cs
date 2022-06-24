@@ -7,7 +7,7 @@ public class FelledState : _WheatState
     {
         base.InitState(wheatController);
 
-        _state = WheatController.WheatState.Felled;
+        State = WheatController.WheatState.Felled;
     }
 
     public void SwitchToWhole()

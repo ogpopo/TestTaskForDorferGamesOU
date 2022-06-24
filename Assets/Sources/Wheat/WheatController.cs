@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class WheatController : MonoBehaviour
 {
-    [SerializeField] private _WheatState[] _allState;
-
     public enum WheatState
     {
         Whole,
         Felled
     }
+
+    [SerializeField] private _WheatState[] _allState;
 
     private Dictionary<WheatState, _WheatState> _wheatDictionary = new Dictionary<WheatState, _WheatState>();
 
@@ -17,6 +17,8 @@ public class WheatController : MonoBehaviour
 
     private Stack<WheatState> stateHistory = new Stack<WheatState>();
 
+    public _WheatState ActiveState => _activeState;
+    
     private void Start()
     {
         foreach (var wheat in _allState)
@@ -26,21 +28,16 @@ public class WheatController : MonoBehaviour
 
             wheat.InitState(this);
 
-            if (_wheatDictionary.ContainsKey(wheat._state))
+            if (_wheatDictionary.ContainsKey(wheat.State))
                 continue;
 
-            _wheatDictionary.Add(wheat._state, wheat);
+            _wheatDictionary.Add(wheat.State, wheat);
         }
 
         foreach (var state in _wheatDictionary.Keys)
             _wheatDictionary[state].gameObject.SetActive(false);
 
         SetActiveState(WheatState.Whole);
-    }
-
-    public void JumpBack()
-    {
-        //todo можно дописать 
     }
 
     public void SetActiveState(WheatState newState)
@@ -61,7 +58,5 @@ public class WheatController : MonoBehaviour
         _activeState.gameObject.SetActive(true);
 
         _activeState.StartInternalProcess();
-
-        Debug.Log(_activeState.GetType());
     }
 }
