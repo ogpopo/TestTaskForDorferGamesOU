@@ -7,7 +7,7 @@ public class Scythe : MonoBehaviour
     {
         gameObject.SetActive(false);
 
-        StartCoroutine(WaitForEndStrike());
+        //StartCoroutine(WaitForEndStrike());
     }
 
     private void OnTriggerEnter(Collider other)
@@ -30,10 +30,8 @@ public class Scythe : MonoBehaviour
 
     private IEnumerator WaitForEndStrike()
     {
-        Debug.Log("111");
         yield return new WaitForSeconds(3);
-        //yield return new WaitUntilAnimationIsPlayed(_playerAnimator, "BaseLayer.Hit");
-        Debug.Log("222");
+
     }
 //todo разобраться почему эта ебаная карутина не робит
 }

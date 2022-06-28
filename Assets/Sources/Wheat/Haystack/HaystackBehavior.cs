@@ -1,5 +1,4 @@
 using System.Collections;
-using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Haystack))]
@@ -7,51 +6,32 @@ public class HaystackBehavior : MonoBehaviour
 {
     [SerializeField] private float _lifetime;
 
-    
-    private Vector3 _stackLastPosition;
-    private bool _interacts;
+    [SerializeField] private Collider _collisionCollider;
+    [SerializeField] private Collider _collider;
+
+    private Rigidbody _haystackRigidbody;
+
+    private void Awake()
+    {
+        _haystackRigidbody = GetComponent<Rigidbody>();
+    }
 
     private void OnEnable()
     {
         //StartCoroutine(StartLifeCountdown());
     }
 
-    private void Update()
+    public void DisablingPhysics()
     {
-        MovingToStack();
+        Destroy(_haystackRigidbody);
     }
 
-    public void Take(Stack picker)
+    public void DisablingCollided()
     {
-        var freeCell = picker.TryGetFreeHaystack();
-
-        if (freeCell == null)
-        {
-            Debug.Log("Нет свободных ячеек");
-            return;
-        }
-
-        _stackLastPosition = freeCell.transform.position;
-        
-        _interacts = true;
-
-        var sequence = DOTween.Sequence();
-
-        //sequence.SetUpdate(UpdateType.Manual);
-
-        //sequence.Append();
-        transform.DOMove(freeCell.transform.position, 1f);
-        sequence.Join(transform.DORotate(freeCell.transform.rotation.eulerAngles, 1));
+        Destroy(_collisionCollider);
+        Destroy(_collider);
     }
-
-    private void MovingToStack()
-    {
-        /*if (!_interacts & transform.position )
-        {
-            
-        }*/
-    }
-
+    
     private IEnumerator StartLifeCountdown()
     {
         yield return new WaitForSeconds(_lifetime);

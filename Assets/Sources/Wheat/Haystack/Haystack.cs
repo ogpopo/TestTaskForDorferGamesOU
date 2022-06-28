@@ -1,21 +1,18 @@
 using UnityEngine;
 
 [RequireComponent(typeof(HaystackBehavior))]
-public class Haystack : MonoBehaviour
+public class Haystack : MonoBehaviour, ILiftable
 {
     [SerializeField] private int _costBlock;
 
     private HaystackBehavior _behavior;
 
+    public HaystackBehavior HaystackBehavior => _behavior;
+    
     private void Awake()
     {
-        _behavior.GetComponent<HaystackBehavior>();
+        _behavior = gameObject.GetComponent<HaystackBehavior>();
     }
 
     public int CostBlock => _costBlock;
-
-    public void Take(Stack picker)
-    {
-        _behavior.Take(picker);
-    }
 }

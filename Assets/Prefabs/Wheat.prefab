@@ -66,6 +66,7 @@ MonoBehaviour:
   _wholeState: {fileID: 9208456497572698458}
   _haystackObjectPool: {fileID: 4793475131322422565, guid: 307c36166c3468842a2c72262e6497e9, type: 3}
   _offsetHaystackSpawn: -3.9
+  _haystackPrefab: {fileID: 5251907502723427474, guid: 51aa2d04373fcac47893ac1088474ebf, type: 3}
 --- !u!65 &7155034734513156577
 BoxCollider:
   m_ObjectHideFlags: 0
