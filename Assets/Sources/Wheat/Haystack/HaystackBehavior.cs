@@ -1,12 +1,9 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Haystack))]
 public class HaystackBehavior : MonoBehaviour
 {
-    [SerializeField] private float _lifetime;
-
     [SerializeField] private Collider _collisionCollider;
     [SerializeField] private Collider _collider;
 
@@ -34,18 +31,25 @@ public class HaystackBehavior : MonoBehaviour
 
         transform.SetParent(playerStack.transform);
 
-        transform
-            .DOLocalJump(freePositionForHaystack.PositionsForHaystacks.transform.localPosition, 1f, 0, .7f).OnComplete(
-                () =>
-                {
-                    PlayStackThrowingAnimation(freePositionForHaystack);
+        var sequence = DOTween.Sequence();
 
-                    DisablingPhysics();
-                    DisablingCollided();
+        sequence.Append(transform
+            .DOLocalJump(freePositionForHaystack.PositionsForHaystacks.transform.localPosition, 1f, 0, .7f));
+        sequence.Join(
+            transform.DOLocalRotate(freePositionForHaystack.PositionsForHaystacks.transform.localRotation.eulerAngles,
+                .7f));
+        sequence.Join(transform.DOScale(freePositionForHaystack.PositionsForHaystacks.transform.localScale, .7f));
 
-                    playerStack.AddHaystack(_haystack);
-                }
-            );
+        sequence.OnComplete(() =>
+        {
+            DisablingPhysics();
+
+            PlayStackThrowingAnimation(freePositionForHaystack);
+
+            DisablingCollided();
+
+            playerStack.AddHaystack(_haystack);
+        });
     }
 
     private void PlayStackThrowingAnimation(Stack.HaystackToCart freePosition)

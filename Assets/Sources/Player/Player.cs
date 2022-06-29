@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
+
 public class Player : MonoBehaviour
 {
     [SerializeField] private Stack _playerStack;
+
+    [SerializeField] private WalletView _walletView; //это как по мне кривовато, мне было сделать через эвент
     
     [SerializeField] private int _maxCoins;
 
@@ -37,10 +41,18 @@ public class Player : MonoBehaviour
         if (numberСoins < _acceptableNumberCoins)
         {
             PlayerCoins += numberСoins;
+            
+            print(PlayerCoins);
+            
+            _walletView.UpdateValue(numberСoins);
         }
         else
         {
             PlayerCoins += _acceptableNumberCoins;
+            
+            print(PlayerCoins);
+            
+            _walletView.UpdateValue(numberСoins);
         }
     }
 }

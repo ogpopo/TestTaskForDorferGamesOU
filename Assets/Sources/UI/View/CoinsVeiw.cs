@@ -18,6 +18,7 @@ public class CoinsVeiw : MonoBehaviour
     private void OnEnable()
     {
         Stack.SoldOut += AnimateCoins;
+        
         DOTween.SetTweensCapacity(1000, 1000);
     }
 
