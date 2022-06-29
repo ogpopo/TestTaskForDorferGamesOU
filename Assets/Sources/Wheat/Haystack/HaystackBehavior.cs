@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Haystack))]
@@ -9,40 +10,59 @@ public class HaystackBehavior : MonoBehaviour
     [SerializeField] private Collider _collisionCollider;
     [SerializeField] private Collider _collider;
 
+    private Haystack _haystack;
     private Rigidbody _haystackRigidbody;
+
+    private bool _selected;
 
     private void Awake()
     {
+        _haystack = GetComponent<Haystack>();
         _haystackRigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnEnable()
+    public void TryPicksUp(Stack playerStack)
     {
-        //StartCoroutine(StartLifeCountdown());
+        if (_selected)
+            return;
+
+        _selected = true;
+        var freePositionForHaystack = playerStack.TryGetFreeCells();
+
+        if (freePositionForHaystack == null)
+            return;
+
+        transform.SetParent(playerStack.transform);
+
+        transform
+            .DOLocalJump(freePositionForHaystack.PositionsForHaystacks.transform.localPosition, 1f, 0, .7f).OnComplete(
+                () =>
+                {
+                    PlayStackThrowingAnimation(freePositionForHaystack);
+
+                    DisablingPhysics();
+                    DisablingCollided();
+
+                    playerStack.AddHaystack(_haystack);
+                }
+            );
     }
 
-    public void DisablingPhysics()
+    private void PlayStackThrowingAnimation(Stack.HaystackToCart freePosition)
+    {
+        transform.localPosition = freePosition.PositionsForHaystacks.transform.localPosition;
+        transform.localRotation = freePosition.PositionsForHaystacks.transform.localRotation;
+        transform.localScale = freePosition.PositionsForHaystacks.transform.localScale;
+    }
+
+    private void DisablingPhysics()
     {
         Destroy(_haystackRigidbody);
     }
 
-    public void DisablingCollided()
+    private void DisablingCollided()
     {
         Destroy(_collisionCollider);
         Destroy(_collider);
-    }
-    
-    private IEnumerator StartLifeCountdown()
-    {
-        yield return new WaitForSeconds(_lifetime);
-
-        for (var i = 0; i < 40; i++)
-        {
-            transform.Translate(0, .2f, 0, Space.World);
-
-            yield return new WaitForSeconds(.1f);
-        }
-
-        gameObject.SetActive(false);
     }
 }

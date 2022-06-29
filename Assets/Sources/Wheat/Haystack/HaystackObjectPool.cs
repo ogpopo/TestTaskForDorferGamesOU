@@ -34,11 +34,10 @@ public class HaystackObjectPool : MonoBehaviour
         if (_haystacks.Count < MAX_POOL_SIZE)
         {
             GenerateHaystack();
+            
+            GameObject lastHaystack = _haystacks[_haystacks.Count - 1];
 
-            //The new bullet is last in the list so get it
-            GameObject lastBullet = _haystacks[_haystacks.Count - 1];
-
-            return lastBullet;
+            return lastHaystack;
         }
 
         return null;

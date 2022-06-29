@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     {
         if (other.TryGetComponent(out Haystack haystack))
         {
-            _playerStack.PicksUp(haystack);
+            haystack.HaystackBehavior.TryPicksUp(_playerStack);
         }
     }
 
